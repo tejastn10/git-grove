@@ -92,6 +92,7 @@ export const SnapshotDiagram = () => {
 										y={74 + fi * 40}
 										width={80}
 										height={30}
+										rx={3}
 										fill={DIAGRAM.card}
 										stroke={reused ? DIAGRAM.border : DIAGRAM.accent}
 										strokeWidth={reused ? 1 : 1.75}

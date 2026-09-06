@@ -92,7 +92,7 @@ export const StepControls = ({
 				type="button"
 				onClick={onPrev}
 				disabled={step === 0}
-				className="inline-flex items-center gap-1 border border-border px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+				className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
 			>
 				<Icons.arrowLeft className="size-3" /> Prev
 			</button>
@@ -100,7 +100,7 @@ export const StepControls = ({
 				type="button"
 				onClick={onNext}
 				disabled={step === total - 1}
-				className="inline-flex items-center gap-1 border border-git bg-git px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-git-foreground transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-40"
+				className="inline-flex items-center gap-1 rounded-md border border-git bg-git px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-git-foreground transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-40"
 			>
 				Next step <Icons.arrowRight className="size-3" />
 			</button>
@@ -118,7 +118,10 @@ export const StepControls = ({
 			{Array.from({ length: total }).map((_, i) => (
 				<span
 					key={i}
-					className={cx("h-1 flex-1 transition-colors", i <= step ? "bg-git" : "bg-border")}
+					className={cx(
+						"h-1 flex-1 rounded-full transition-colors",
+						i <= step ? "bg-git" : "bg-border"
+					)}
 				/>
 			))}
 		</div>
@@ -163,6 +166,7 @@ export const Zone = ({
 			y={y}
 			width={w}
 			height={h}
+			rx={6}
 			fill="transparent"
 			stroke={active ? DIAGRAM.accent : DIAGRAM.border}
 			strokeWidth={active ? 2 : 1}
@@ -273,6 +277,7 @@ export const RefTag = ({
 				y={y}
 				width={w}
 				height={20}
+				rx={4}
 				fill={accent ? DIAGRAM.accent : "transparent"}
 				stroke={accent ? DIAGRAM.accent : DIAGRAM.border}
 				strokeWidth={1}

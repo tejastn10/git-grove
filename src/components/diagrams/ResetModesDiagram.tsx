@@ -73,7 +73,7 @@ export const ResetModesDiagram = () => {
 								type="button"
 								onClick={() => setMode(m)}
 								className={cx(
-									"border px-2.5 py-1 font-mono text-xs uppercase tracking-wide transition-colors",
+									"rounded-md border px-2.5 py-1 font-mono text-xs uppercase tracking-wide transition-colors",
 									mode === m
 										? "border-git bg-git text-git-foreground"
 										: "border-border text-muted-foreground hover:text-foreground"

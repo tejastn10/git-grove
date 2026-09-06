@@ -18,7 +18,7 @@ export const GitVersionBadge = async ({ className }: Props) => {
 	return (
 		<span
 			className={cx(
-				"inline-flex items-center gap-2 border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground",
+				"inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground",
 				className
 			)}
 			title={
@@ -40,7 +40,7 @@ export const GitVersionBadge = async ({ className }: Props) => {
 export const GitVersionBadgeSkeleton = ({ className }: Props) => (
 	<span
 		className={cx(
-			"inline-flex items-center gap-2 border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground",
+			"inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground",
 			className
 		)}
 	>

@@ -147,43 +147,8 @@
 		--git: 9 82% 47%;
 		--git-foreground: 0 0% 100%;
 
-		--radius: 0rem;
-	}
-
-	.dark {
-		--background: 0 0% 0%;
-		--foreground: 0 0% 100%;
-
-		--card: 0 0% 0%;
-		--card-foreground: 0 0% 100%;
-
-		--popover: 0 0% 0%;
-		--popover-foreground: 0 0% 100%;
-
-		--primary: 0 0% 100%;
-		--primary-foreground: 0 0% 0%;
-
-		/* Surface level 2 */
-		--secondary: 0 0% 12%;
-		--secondary-foreground: 0 0% 100%;
-
-		/* Muted surfaces */
-		--muted: 0 0% 10%;
-		--muted-foreground: 0 0% 48%;
-
-		--accent: 0 0% 14%;
-		--accent-foreground: 0 0% 100%;
-
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-
-		/* Very subtle border — like Linear's rgba(255,255,255,0.08) approximated */
-		--border: 0 0% 14%;
-		--input: 0 0% 14%;
-		--ring: 0 0% 65%;
-
-		--git: 9 88% 60%;
-		--git-foreground: 0 0% 0%;
+		/* GitGrove is a light-only site. */
+		--radius: 0.5rem;
 	}
 }
 
@@ -213,7 +178,6 @@ h3 code {
 code,
 pre {
 	font-family: var(--font-mono), monospace;
-	border-radius: 0;
 }
 
 /* ─── Block code ──────────────────────────────────────────────── */
@@ -224,6 +188,7 @@ pre {
 	font-size: 0.875rem;
 	line-height: 1.7;
 	border: 1px solid hsl(var(--border));
+	border-radius: var(--radius);
 	tab-size: 2;
 }
 
@@ -243,7 +208,7 @@ pre > code {
 	color: hsl(var(--foreground));
 	border: 1px solid hsl(var(--border));
 	padding: 0.1rem 0.35rem;
-	border-radius: 0;
+	border-radius: var(--radius-sm);
 }
 
 * {
@@ -359,6 +324,7 @@ article strong {
 	letter-spacing: 0.05em;
 	color: hsl(var(--muted-foreground));
 	border: 1px solid hsl(var(--border));
+	border-radius: var(--radius-sm);
 	padding: 0.15rem 0.4rem;
 	background: hsl(var(--muted));
 	cursor: pointer;
@@ -438,7 +404,9 @@ article strong {
 
 /* ─── GitHub-style alert callouts (the "gotcha" boxes) ─────────── */
 article .markdown-alert {
-	border-left: 2px solid hsl(var(--border));
+	border: 1px solid hsl(var(--border));
+	border-left: 3px solid hsl(var(--border));
+	border-radius: var(--radius);
 	background: hsl(var(--muted));
 	padding: 0.85rem 1rem;
 	margin: 1.5rem 0;
@@ -502,7 +470,9 @@ article :is(h1, h2, h3, h4):hover .anchor::after {
 /* ─── Diagram surface ─────────────────────────────────────────── */
 .diagram-frame {
 	border: 1px solid hsl(var(--border));
+	border-radius: var(--radius);
 	background: hsl(var(--card));
+	overflow: hidden;
 }
 .diagram-frame svg text {
 	font-family: var(--font-mono), monospace;

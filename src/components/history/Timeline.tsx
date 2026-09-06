@@ -14,7 +14,7 @@ export const Timeline = ({ entries }: { entries: Era[] }) => (
 				style={{ "--bf-delay": `${0.04 + i * 0.06}s` } as CSSProperties}
 			>
 				<span
-					className="absolute -left-[6.5px] mt-1.5 size-3 border-2 border-git bg-background"
+					className="absolute -left-[6.5px] mt-1.5 size-3 rounded-full border-2 border-git bg-background"
 					aria-hidden="true"
 				/>
 				<p className="font-mono text-[11px] uppercase tracking-[0.1em] text-git">{era.year}</p>

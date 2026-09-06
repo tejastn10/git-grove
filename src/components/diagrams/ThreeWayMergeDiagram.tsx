@@ -91,7 +91,7 @@ export const ThreeWayMergeDiagram = () => {
 									setMerged(false);
 								}}
 								className={cx(
-									"border px-2.5 py-1 font-mono text-xs uppercase tracking-wide transition-colors",
+									"rounded-md border px-2.5 py-1 font-mono text-xs uppercase tracking-wide transition-colors",
 									key === k
 										? "border-foreground text-foreground"
 										: "border-border text-muted-foreground hover:text-foreground"
@@ -103,7 +103,7 @@ export const ThreeWayMergeDiagram = () => {
 						<button
 							type="button"
 							onClick={() => setMerged((m) => !m)}
-							className="ml-auto border border-git bg-git px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-git-foreground"
+							className="ml-auto rounded-md border border-git bg-git px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-git-foreground"
 						>
 							{merged ? "Undo merge" : "git merge feature"}
 						</button>

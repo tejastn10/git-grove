@@ -8,7 +8,7 @@ type BadgeProps = HTMLAttributes<HTMLDivElement> &
 	};
 
 const badgeVariants = cva(
-	"inline-flex items-center border px-2.5 py-0.5 text-xs font-mono font-medium tracking-wide transition-colors focus:outline-hidden focus:ring-1 focus:ring-ring",
+	"inline-flex items-center border rounded-md px-2.5 py-0.5 text-xs font-mono font-medium tracking-wide transition-colors focus:outline-hidden focus:ring-1 focus:ring-ring",
 	{
 		variants: {
 			variant: {

@@ -20,6 +20,7 @@ export const SITE = {
 
 	nav: [
 		{ href: "/git", label: "The Guide" },
+		{ href: "/playground", label: "Sandbox" },
 		{ href: "/history", label: "History" },
 	],
 

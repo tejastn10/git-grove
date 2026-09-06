@@ -1,9 +1,8 @@
 import "./globals.css";
 
 import { GeistPixelSquare } from "geist/font/pixel";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { PageLines } from "@/components/ui/PageLines";
 import { TopNavbar } from "@/containers/TopNavbar";
 import { SITE } from "@/data/site";
@@ -14,6 +13,11 @@ const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
 	display: "swap",
 });
+
+export const viewport: Viewport = {
+	colorScheme: "light",
+	themeColor: "#ffffff",
+};
 
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE.url),
@@ -39,17 +43,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={cx(geistMono.variable, GeistPixelSquare.variable)}
-		>
+		<html lang="en" className={cx(geistMono.variable, GeistPixelSquare.variable)}>
 			<body className="min-h-screen bg-background font-mono text-foreground antialiased">
-				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-					<TopNavbar />
-					<div className="pt-12">{children}</div>
-					<PageLines />
-				</ThemeProvider>
+				<TopNavbar />
+				<div className="pt-12">{children}</div>
+				<PageLines />
 			</body>
 		</html>
 	);

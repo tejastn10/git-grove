@@ -31,15 +31,15 @@ const Home = () => (
 				<div className="mt-8 flex flex-wrap items-center gap-3">
 					<Link
 						href="/git"
-						className="inline-flex items-center gap-2 border border-git bg-git px-4 py-2 font-mono text-xs uppercase tracking-wide text-git-foreground transition-opacity hover:opacity-90"
+						className="inline-flex items-center gap-2 rounded-md border border-git bg-git px-4 py-2 font-mono text-xs uppercase tracking-wide text-git-foreground transition-opacity hover:opacity-90"
 					>
 						Open the guide <Icons.arrowRight className="size-3.5" />
 					</Link>
 					<Link
-						href="/history"
-						className="inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
+						href="/playground"
+						className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
 					>
-						History of Git
+						Open the sandbox
 					</Link>
 				</div>
 			</BlurFade>
@@ -77,7 +77,7 @@ const Home = () => (
 			</BlurFade>
 
 			<BlurFade inView className="mt-8 block">
-				<div className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
 					{GUIDE_LANDMARKS.map((item, i) => (
 						<Link
 							key={item.anchor}
@@ -97,6 +97,25 @@ const Home = () => (
 						</Link>
 					))}
 				</div>
+			</BlurFade>
+		</section>
+
+		{/* ── Sandbox ────────────────────────────────────────────── */}
+		<section className="mt-24 border-t border-border pt-10">
+			<BlurFade inView>
+				<SectionLabel label="Hands-on" />
+				<h2 className="mt-2 text-2xl font-bold tracking-tighter sm:text-3xl">The Sandbox</h2>
+				<p className="mt-2 max-w-2xl text-muted-foreground md:text-base">
+					One in-browser repository you drive by clicking commands. Add, commit, branch, switch,
+					merge, reset — and watch the three areas and the commit graph react together, exactly the
+					way the real commands compose.
+				</p>
+				<Link
+					href="/playground"
+					className="mt-5 inline-flex items-center gap-2 rounded-md border border-git bg-git px-4 py-2 font-mono text-xs uppercase tracking-wide text-git-foreground transition-opacity hover:opacity-90"
+				>
+					Open the sandbox <Icons.arrowRight className="size-3.5" />
+				</Link>
 			</BlurFade>
 		</section>
 

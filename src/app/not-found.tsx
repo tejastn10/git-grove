@@ -13,13 +13,13 @@ const NotFound: FC = () => (
 		<div className="flex flex-wrap justify-center gap-3">
 			<Link
 				href="/"
-				className="inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
+				className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
 			>
 				<Icons.home className="size-3.5" /> Home
 			</Link>
 			<Link
 				href="/git"
-				className="inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
+				className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
 			>
 				The guide <Icons.arrowRight className="size-3.5" />
 			</Link>

@@ -107,6 +107,7 @@ export const StagingFlowDiagram = () => {
 						y={FILE_Y - 16}
 						width={68}
 						height={32}
+						rx={4}
 						fill={DIAGRAM.bg}
 						stroke={s.staged ? DIAGRAM.accent : DIAGRAM.stroke}
 						strokeWidth={1.5}

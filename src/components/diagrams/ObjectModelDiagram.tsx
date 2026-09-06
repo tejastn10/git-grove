@@ -102,6 +102,7 @@ export const ObjectModelDiagram = () => {
 							y={o.y}
 							width={o.w}
 							height={o.h}
+							rx={4}
 							fill={DIAGRAM.card}
 							stroke={o.kind.startsWith("commit") ? DIAGRAM.accent : DIAGRAM.stroke}
 							strokeWidth={o.kind.startsWith("commit") ? 2 : 1.25}

@@ -87,7 +87,7 @@ const Panel = ({
 }) => {
 	const byId = Object.fromEntries(frame.nodes.map((n) => [n.id, n]));
 	return (
-		<div className="min-w-[300px] flex-1 border border-border">
+		<div className="min-w-[300px] flex-1 overflow-hidden rounded-lg border border-border">
 			<p className="border-b border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
 				{title}
 			</p>

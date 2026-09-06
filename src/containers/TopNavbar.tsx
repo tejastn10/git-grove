@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC } from "react";
 import { Icons } from "@/components/icons/Icons";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { SITE } from "@/data/site";
 import { cx } from "@/utils/tailwind";
 
@@ -57,8 +56,6 @@ const TopNavbar: FC = () => {
 					>
 						<Icons.github className="size-4" />
 					</a>
-					<span className="h-3 w-px bg-border" aria-hidden="true" />
-					<ThemeToggle />
 				</div>
 			</nav>
 		</header>
