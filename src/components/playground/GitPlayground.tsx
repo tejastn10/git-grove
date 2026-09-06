@@ -391,11 +391,13 @@ const reducer = (s: State, a: Action): State => {
 
 // ── Graph layout ────────────────────────────────────────────────
 
-const COL_W = 64;
-const ROW_H = 58;
-const PAD_X = 34;
-const PAD_Y = 28;
-const R = 15;
+const COL_W = 78;
+const ROW_H = 76;
+const PAD_X = 40;
+const PAD_Y = 44;
+const R = 16;
+/** minimum graph canvas height so a small repo still has breathing room */
+const MIN_GRAPH_H = 220;
 
 const useLayout = (s: State) =>
 	useMemo(() => {
@@ -501,7 +503,7 @@ export const GitPlayground = () => {
 
 	const otherBranches = s.branches.filter((b) => b.name !== s.head);
 	const headTip = tipOf(s, s.head);
-	const graphH = Math.max(height + PAD_Y + (hasOrphan ? 14 : 0), 110);
+	const graphH = Math.max(height + PAD_Y + (hasOrphan ? 20 : 0), MIN_GRAPH_H);
 
 	// commits you can cherry-pick (any real commit that isn't the current tip)
 	const pickable = s.commits.filter((c) => !c.orphan && c.id !== headTip && c.parents.length > 0);
@@ -605,7 +607,7 @@ export const GitPlayground = () => {
 			</div>
 
 			{/* ── Visualization ───────────────────────────────── */}
-			<div className="flex min-w-0 flex-col gap-4">
+			<div className="flex min-w-0 flex-col gap-5">
 				<div className="grid grid-cols-2 gap-3 font-mono text-xs sm:grid-cols-4">
 					<Stat
 						label="working tree"
@@ -620,7 +622,7 @@ export const GitPlayground = () => {
 				</div>
 
 				{/* commit graph */}
-				<div className="overflow-x-auto rounded-lg border border-border bg-card p-3">
+				<div className="overflow-x-auto rounded-lg border border-border bg-card p-5">
 					<svg
 						width={width}
 						height={graphH}
@@ -630,121 +632,128 @@ export const GitPlayground = () => {
 						aria-label="Commit graph"
 					>
 						<title>Commit graph</title>
-						{/* edges */}
-						{s.commits.flatMap((c) =>
-							c.parents.map((p) => {
-								const from = pos.get(p);
-								const to = pos.get(c.id);
-								if (!from || !to) return null;
-								const mid = (from.x + to.x) / 2;
-								const dim = c.orphan || commitById(s, p)?.orphan;
-								return (
-									<path
-										key={`${p}-${c.id}`}
-										className="edge-in glide"
-										style={{
-											transform: `translate(${from.x}px, ${from.y}px)`,
-										}}
-										d={`M 0 0 C ${mid - from.x} 0, ${mid - from.x} ${to.y - from.y}, ${to.x - from.x} ${to.y - from.y}`}
-										fill="none"
-										stroke="hsl(var(--muted-foreground))"
-										strokeWidth={1.5}
-										opacity={dim ? 0.22 : 0.7}
-									/>
-								);
-							})
-						)}
-						{/* commits — outer <g> glides to position, inner pops in */}
-						{s.commits.map((c) => {
-							const p = pos.get(c.id);
-							if (!p) return null;
-							const isHeadTip = c.id === headTip;
-							return (
-								<g
-									key={c.id}
-									className="glide"
-									style={{ transform: `translate(${p.x}px, ${p.y}px)` }}
-									opacity={c.orphan ? 0.3 : 1}
-								>
-									<g className="node-pop">
-										<circle
-											r={R}
-											fill="hsl(var(--card))"
-											stroke={isHeadTip ? "hsl(var(--git))" : "hsl(var(--foreground))"}
-											strokeWidth={isHeadTip ? 2.5 : 1.5}
+						<g
+							className="glide"
+							style={{
+								transform: `translate(0px, ${Math.max(0, (graphH - height) / 2 - PAD_Y / 2)}px)`,
+							}}
+						>
+							{/* edges */}
+							{s.commits.flatMap((c) =>
+								c.parents.map((p) => {
+									const from = pos.get(p);
+									const to = pos.get(c.id);
+									if (!from || !to) return null;
+									const mid = (from.x + to.x) / 2;
+									const dim = c.orphan || commitById(s, p)?.orphan;
+									return (
+										<path
+											key={`${p}-${c.id}`}
+											className="edge-in glide"
+											style={{
+												transform: `translate(${from.x}px, ${from.y}px)`,
+											}}
+											d={`M 0 0 C ${mid - from.x} 0, ${mid - from.x} ${to.y - from.y}, ${to.x - from.x} ${to.y - from.y}`}
+											fill="none"
+											stroke="hsl(var(--muted-foreground))"
+											strokeWidth={1.5}
+											opacity={dim ? 0.22 : 0.7}
 										/>
-										<text y={3} fontSize={8.5} textAnchor="middle" fill="hsl(var(--foreground))">
-											{c.label}
-										</text>
-									</g>
-								</g>
-							);
-						})}
-						{/* branch pointers — slide with their tip */}
-						{s.branches.map((b) => {
-							const p = pos.get(b.tip);
-							if (!p) return null;
-							const isHead = b.name === s.head;
-							const row = branchesAt(b.tip).indexOf(b);
-							const label = isHead ? `HEAD → ${b.name}` : b.name;
-							const w = label.length * 6 + 12;
-							return (
-								<g
-									key={b.name}
-									className="glide"
-									style={{
-										transform: `translate(${p.x + R + 8}px, ${p.y - 10 + row * 22}px)`,
-									}}
-								>
-									<rect
-										width={w}
-										height={20}
-										rx={4}
-										fill={isHead ? "hsl(var(--git))" : "transparent"}
-										stroke={isHead ? "hsl(var(--git))" : "hsl(var(--border))"}
-									/>
-									<text
-										x={6}
-										y={14}
-										fontSize={10}
-										fill={isHead ? "hsl(var(--git-foreground))" : "hsl(var(--foreground))"}
+									);
+								})
+							)}
+							{/* commits — outer <g> glides to position, inner pops in */}
+							{s.commits.map((c) => {
+								const p = pos.get(c.id);
+								if (!p) return null;
+								const isHeadTip = c.id === headTip;
+								return (
+									<g
+										key={c.id}
+										className="glide"
+										style={{ transform: `translate(${p.x}px, ${p.y}px)` }}
+										opacity={c.orphan ? 0.3 : 1}
 									>
-										{label}
-									</text>
-								</g>
-							);
-						})}
-						{/* tags */}
-						{s.tags.map((t, i) => {
-							const p = pos.get(t.target);
-							if (!p) return null;
-							const above = branchesAt(t.target).length;
-							const tagRow = s.tags.filter((x) => x.target === t.target).indexOf(t);
-							const w = t.name.length * 6 + 16;
-							return (
-								<g
-									key={`${t.name}-${i}`}
-									className="glide"
-									style={{
-										transform: `translate(${p.x + R + 8}px, ${p.y - 10 + (above + tagRow) * 22}px)`,
-									}}
-								>
-									<g className="node-pop">
+										<g className="node-pop">
+											<circle
+												r={R}
+												fill="hsl(var(--card))"
+												stroke={isHeadTip ? "hsl(var(--git))" : "hsl(var(--foreground))"}
+												strokeWidth={isHeadTip ? 2.5 : 1.5}
+											/>
+											<text y={3} fontSize={8.5} textAnchor="middle" fill="hsl(var(--foreground))">
+												{c.label}
+											</text>
+										</g>
+									</g>
+								);
+							})}
+							{/* branch pointers — slide with their tip */}
+							{s.branches.map((b) => {
+								const p = pos.get(b.tip);
+								if (!p) return null;
+								const isHead = b.name === s.head;
+								const row = branchesAt(b.tip).indexOf(b);
+								const label = isHead ? `HEAD → ${b.name}` : b.name;
+								const w = label.length * 6 + 12;
+								return (
+									<g
+										key={b.name}
+										className="glide"
+										style={{
+											transform: `translate(${p.x + R + 8}px, ${p.y - 10 + row * 22}px)`,
+										}}
+									>
 										<rect
 											width={w}
 											height={20}
 											rx={4}
-											fill="transparent"
-											stroke="hsl(var(--muted-foreground))"
-											strokeDasharray="3 2"
+											fill={isHead ? "hsl(var(--git))" : "transparent"}
+											stroke={isHead ? "hsl(var(--git))" : "hsl(var(--border))"}
 										/>
-										<text x={6} y={14} fontSize={10} fill="hsl(var(--muted-foreground))">
-											⌂ {t.name}
+										<text
+											x={6}
+											y={14}
+											fontSize={10}
+											fill={isHead ? "hsl(var(--git-foreground))" : "hsl(var(--foreground))"}
+										>
+											{label}
 										</text>
 									</g>
-								</g>
-							);
-						})}
+								);
+							})}
+							{/* tags */}
+							{s.tags.map((t, i) => {
+								const p = pos.get(t.target);
+								if (!p) return null;
+								const above = branchesAt(t.target).length;
+								const tagRow = s.tags.filter((x) => x.target === t.target).indexOf(t);
+								const w = t.name.length * 6 + 16;
+								return (
+									<g
+										key={`${t.name}-${i}`}
+										className="glide"
+										style={{
+											transform: `translate(${p.x + R + 8}px, ${p.y - 10 + (above + tagRow) * 22}px)`,
+										}}
+									>
+										<g className="node-pop">
+											<rect
+												width={w}
+												height={20}
+												rx={4}
+												fill="transparent"
+												stroke="hsl(var(--muted-foreground))"
+												strokeDasharray="3 2"
+											/>
+											<text x={6} y={14} fontSize={10} fill="hsl(var(--muted-foreground))">
+												⌂ {t.name}
+											</text>
+										</g>
+									</g>
+								);
+							})}
+						</g>
 					</svg>
 				</div>
 
@@ -764,7 +773,7 @@ export const GitPlayground = () => {
 				{/* transcript */}
 				<div
 					ref={logRef}
-					className="max-h-56 overflow-y-auto rounded-lg border border-border bg-muted p-3 font-mono text-xs leading-relaxed"
+					className="max-h-72 min-h-40 overflow-y-auto rounded-lg border border-border bg-muted p-4 font-mono text-xs leading-relaxed"
 				>
 					{s.log.map((l, i) => (
 						<div key={i} className="flex flex-wrap gap-x-2">
