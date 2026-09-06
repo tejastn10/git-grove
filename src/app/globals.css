@@ -6,8 +6,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-	--font-sans: var(--font-geist-pixel-square), "Geist Pixel Square", monospace;
-	--font-mono: var(--font-geist-pixel-square), "Geist Pixel Square", monospace;
+	/* Space Grotesk for display + body (its fixed-width DNA keeps a technical
+	   feel); JetBrains Mono for code, commands and the small section labels. */
+	--font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
 	--color-border: hsl(var(--border));
 	--color-input: hsl(var(--input));
@@ -155,17 +157,27 @@
 @layer base {
 	* {
 		@apply border-border;
-		font-family: var(--font-geist-pixel-square), "Geist Pixel Square", monospace;
 	}
 	body {
 		@apply bg-background text-foreground;
+		font-family: var(--font-sans);
+		line-height: 1.55;
+		-webkit-font-smoothing: antialiased;
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+	code,
+	kbd,
+	samp,
+	pre {
+		font-family: var(--font-mono);
 	}
 }
-
-* {
-	line-height: 1.2;
-}
-
 
 h1 {
 	padding-right: 0.5rem;

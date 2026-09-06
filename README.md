@@ -25,7 +25,7 @@
 - **Custom Animations**: Smooth transitions that respect `prefers-reduced-motion`.
 - **Responsive Design**: Fully optimized for desktops, tablets, and mobile devices.
 - **Theming**: Built-in light and dark mode toggle.
-- **Optimized Fonts**: Includes `Geist Pixel Square` and `Geist Mono` fonts, optimized via `next/font`.
+- **Optimized Fonts**: `Space Grotesk` for display and body, `JetBrains Mono` for code and commands, loaded via `next/font`.
 - **Effortless Deployment**: Designed for seamless deployment on Vercel.
 
 ---
