@@ -428,26 +428,32 @@ const useLayout = (s: State) =>
 
 // ── UI ──────────────────────────────────────────────────────────
 
+/*
+ * Command buttons are never disabled — every click lands a line in the
+ * transcript, either the action or a helpful "nothing to stage" style note,
+ * the way real git talks back. `muted` just dims a button whose action
+ * currently wouldn't do much, without blocking it.
+ */
 const CmdButton = ({
 	onClick,
-	disabled,
+	muted,
 	children,
 	primary,
 }: {
 	onClick: () => void;
-	disabled?: boolean;
+	muted?: boolean;
 	children: React.ReactNode;
 	primary?: boolean;
 }) => (
 	<button
 		type="button"
 		onClick={onClick}
-		disabled={disabled}
 		className={cx(
-			"rounded-md border px-2.5 py-1.5 text-left font-mono text-xs transition-colors disabled:pointer-events-none disabled:opacity-35",
+			"rounded-md border px-2.5 py-1.5 text-left font-mono text-xs transition-colors",
 			primary
 				? "border-git bg-git text-git-foreground hover:opacity-90"
-				: "border-border text-foreground hover:bg-muted"
+				: "border-border text-foreground hover:bg-muted",
+			muted && !primary && "opacity-55"
 		)}
 	>
 		{children}
@@ -523,23 +529,20 @@ export const GitPlayground = () => {
 					<CmdButton onClick={() => dispatch({ type: "edit" })}>
 						edit a file <span className="text-muted-foreground">— dirty the tree</span>
 					</CmdButton>
-					<CmdButton onClick={() => dispatch({ type: "add" })} disabled={s.working === 0}>
+					<CmdButton onClick={() => dispatch({ type: "add" })} muted={s.working === 0}>
 						git add .
 					</CmdButton>
-					<CmdButton onClick={() => dispatch({ type: "commit" })} disabled={s.staged === 0} primary>
+					<CmdButton onClick={() => dispatch({ type: "commit" })} muted={s.staged === 0} primary>
 						git commit
 					</CmdButton>
 					<CmdButton onClick={() => dispatch({ type: "amend" })}>git commit --amend</CmdButton>
 					<CmdButton
 						onClick={() => dispatch({ type: "stash" })}
-						disabled={s.working === 0 && s.staged === 0}
+						muted={s.working === 0 && s.staged === 0}
 					>
 						git stash
 					</CmdButton>
-					<CmdButton
-						onClick={() => dispatch({ type: "stashPop" })}
-						disabled={s.stashes.length === 0}
-					>
+					<CmdButton onClick={() => dispatch({ type: "stashPop" })} muted={s.stashes.length === 0}>
 						git stash pop{s.stashes.length > 0 ? ` (${s.stashes.length})` : ""}
 					</CmdButton>
 				</Panel>
@@ -547,7 +550,7 @@ export const GitPlayground = () => {
 				<Panel label="Branches">
 					<CmdButton
 						onClick={() => dispatch({ type: "branch" })}
-						disabled={s.branches.length >= BRANCH_POOL.length + 1}
+						muted={s.branches.length >= BRANCH_POOL.length + 1}
 					>
 						git switch -c &lt;new&gt;
 					</CmdButton>
