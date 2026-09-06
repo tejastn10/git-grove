@@ -1,0 +1,65 @@
+import { forwardRef, type HTMLAttributes } from "react";
+
+import { cx } from "@/utils/tailwind";
+
+const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+	({ className, children, ...props }, ref) => (
+		<div
+			ref={ref}
+			className={cx("bg-card text-card-foreground border border-border", className)}
+			{...props}
+		>
+			{children}
+		</div>
+	)
+);
+Card.displayName = "Card";
+
+const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+	({ className, ...props }, ref) => (
+		<div ref={ref} className={cx("flex flex-col", className)} {...props} />
+	)
+);
+CardHeader.displayName = "CardHeader";
+
+const CardTitle = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
+	({ className, ...props }, ref) => (
+		<h3
+			ref={ref}
+			className={cx("text-2xl font-semibold leading-none tracking-tight", className)}
+			{...props}
+		/>
+	)
+);
+CardTitle.displayName = "CardTitle";
+
+const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
+	({ className, ...props }, ref) => (
+		<p
+			ref={ref}
+			className={cx("text-sm text-muted-foreground font-normal", className)}
+			{...props}
+		/>
+	)
+);
+CardDescription.displayName = "CardDescription";
+
+const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+	({ className, ...props }, ref) => (
+		<div
+			ref={ref}
+			className={cx("text-pretty font-mono text-sm text-muted-foreground font-normal", className)}
+			{...props}
+		/>
+	)
+);
+CardContent.displayName = "CardContent";
+
+const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+	({ className, ...props }, ref) => (
+		<div ref={ref} className={cx("flex items-center pt-2 font-normal", className)} {...props} />
+	)
+);
+CardFooter.displayName = "CardFooter";
+
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
