@@ -501,17 +501,49 @@ article :is(h1, h2, h3, h4):hover .anchor::after {
 	animation: blur-fade-in var(--bf-duration, 0.4s) ease-out var(--bf-delay, 0s);
 }
 
-/* ─── Reduced motion ─────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-	.blur-fade {
-		animation: none;
+/* ─── Interactive-diagram animation ──────────────────────────────
+   Short, meaningful state-change animations used by the guide diagrams
+   and the sandbox: a node popping in, a pointer sliding to its new
+   commit. Kept as CSS so they play regardless of the motion library's
+   own reduced-motion handling — they're small and non-vestibular. */
+@keyframes node-pop {
+	from {
+		opacity: 0;
+		transform: scale(0.4);
 	}
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.001ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.001ms !important;
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes edge-in {
+	from {
+		opacity: 0;
+	}
+}
+.node-pop {
+	animation: node-pop 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+	transform-box: fill-box;
+	transform-origin: center;
+}
+.edge-in {
+	animation: edge-in 0.4s ease-out;
+}
+/* elements that reposition between steps glide there */
+.glide {
+	transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────
+   Tone down decorative motion — scroll reveals, the drifting
+   background graph, glows, marquees — but keep the short, informative
+   diagram/sandbox transitions, which convey state rather than decorate. */
+@media (prefers-reduced-motion: reduce) {
+	.blur-fade,
+	.animate-glow,
+	.animate-glow-more,
+	.animate-grow {
+		animation: none !important;
 	}
 }
 

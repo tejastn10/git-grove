@@ -132,12 +132,7 @@ export const ResetModesDiagram = () => {
 							<text x={12} y={p.y + 4} fontSize={10} fill={DIAGRAM.muted}>
 								{p.label}
 							</text>
-							<g
-								transform={`translate(${target} 0)`}
-								style={{
-									transition: reduced ? undefined : "transform 0.45s cubic-bezier(0.4,0,0.2,1)",
-								}}
-							>
+							<g className="glide" style={{ transform: `translate(${target}px, 0px)` }}>
 								<circle cx={0} cy={p.y} r={4} fill={DIAGRAM.accent} />
 								<line
 									x1={0}

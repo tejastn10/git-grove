@@ -68,10 +68,7 @@ export const FetchVsPullDiagram = () => {
 		label: string;
 		accent?: boolean;
 	}) => (
-		<g
-			transform={`translate(${xOf(at)} 0)`}
-			style={{ transition: reduced ? undefined : "transform 0.45s cubic-bezier(0.4,0,0.2,1)" }}
-		>
+		<g className="glide" style={{ transform: `translate(${xOf(at)}px, 0px)` }}>
 			<line
 				x1={0}
 				y1={y}

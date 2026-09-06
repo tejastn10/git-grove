@@ -1,13 +1,6 @@
 "use client";
 
-import {
-	DIAGRAM,
-	DiagramFrame,
-	StepControls,
-	useDiagramMotion,
-	useSteps,
-	Zone,
-} from "./primitives";
+import { DIAGRAM, DiagramFrame, StepControls, useSteps, Zone } from "./primitives";
 
 /*
  * The three areas, and how `git add` / `git commit` move a file between them.
@@ -54,7 +47,6 @@ const FILE_X = [104, 320, 536];
 const FILE_Y = 96;
 
 export const StagingFlowDiagram = () => {
-	const reduced = useDiagramMotion();
 	const { step, next, prev, reset } = useSteps(STEPS.length);
 	const s = STEPS[step];
 
@@ -99,8 +91,8 @@ export const StagingFlowDiagram = () => {
 
 				{/* the file token — real transform per step, CSS-eased */}
 				<g
-					transform={`translate(${FILE_X[s.zone] - FILE_X[0]} 0)`}
-					style={{ transition: reduced ? undefined : "transform 0.45s cubic-bezier(0.4,0,0.2,1)" }}
+					className="glide"
+					style={{ transform: `translate(${FILE_X[s.zone] - FILE_X[0]}px, 0px)` }}
 				>
 					<rect
 						x={FILE_X[0] - 34}
