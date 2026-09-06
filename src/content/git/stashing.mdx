@@ -1,0 +1,20 @@
+`git stash` shelves your uncommitted changes (working tree + staged) and reverts your working tree to a clean `HEAD`, so you can switch context without committing half-done work.
+
+```bash
+git stash                       # or: git stash push -m "wip: refactor auth"
+git stash list                  # stash@{0}, stash@{1}, …
+git stash show -p stash@{0}     # what's in a stash
+git stash pop                   # re-apply the newest stash AND drop it
+git stash apply stash@{1}       # re-apply a specific stash, keep it in the list
+git stash drop stash@{0}        # delete one
+git stash -u                    # also stash untracked files
+git stash branch fix-x          # create a branch from a stash (if it won't apply cleanly)
+```
+
+Under the hood a stash is a couple of real commits parked on the `refs/stash` ref — not a patch file.
+
+> [!WARNING]
+> The stash is a **stack**, and `pop` from a dirty working tree can itself conflict. It's easy to lose track of which stash is which — always use `-m` to name them, and prefer a throwaway branch or a WIP commit for anything you'll leave stashed for more than a few minutes.
+
+> [!NOTE]
+> `git stash` is not backed up anywhere and isn't included in `git push`. A stash you forget about can be lost in a later `git stash clear`.

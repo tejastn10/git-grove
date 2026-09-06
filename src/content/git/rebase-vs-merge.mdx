@@ -1,0 +1,19 @@
+Both `merge` and `rebase` integrate one branch's work into another. They differ in what the history looks like afterwards — compare them side by side in the diagram below.
+
+**Merge** preserves exactly what happened: your commits stay as they are, and a merge commit records the join. History is truthful but can get tangled with many branches.
+
+**Rebase** rewrites your branch's commits so they appear to have been made *on top of* the target branch. Git takes each of your commits, and re-creates it with a new parent — and therefore **a new hash**. The old commits become unreachable. Result: a clean, linear history with no merge commits.
+
+```bash
+git switch feature
+git rebase main            # replay feature's commits onto the tip of main
+git rebase --continue      # after resolving a conflict
+git rebase --abort         # back to before you started
+git rebase --onto main old-base feature   # surgical: move just part of a branch
+```
+
+> [!CAUTION]
+> **Never rebase commits that others have based work on** (anything you've pushed to a shared branch). Rebasing rewrites hashes; everyone else still has the originals, and their next pull creates duplicate commits and confusion. Rule of thumb: rebase *local, unpushed* work freely; merge everything else.
+
+> [!NOTE]
+> A common workflow: rebase your feature branch onto `main` while you work (keeps it current and clean), then `merge --no-ff` it into `main` when it's done (records the feature as a unit).

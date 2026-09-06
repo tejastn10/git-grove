@@ -1,0 +1,21 @@
+Hooks are executable scripts Git runs at specific points in its workflow. They live in `.git/hooks/` (see the `.sample` files Git ships) and are named for the event they fire on.
+
+**Client-side**, common ones:
+
+- `pre-commit` — runs before the commit is created; exit non-zero to abort. Used for linting, formatting, running fast tests, blocking secrets.
+- `commit-msg` — receives the message file path; validate or rewrite it (e.g. enforce Conventional Commits).
+- `pre-push` — last gate before commits leave your machine.
+
+**Server-side** (on the remote): `pre-receive`, `update`, `post-receive` — enforce policy, trigger deploys or CI.
+
+```bash
+ls .git/hooks/                 # *.sample templates
+chmod +x .git/hooks/pre-commit # a hook must be executable to run
+git commit --no-verify         # bypass pre-commit and commit-msg hooks
+```
+
+> [!NOTE]
+> `.git/hooks/` is **not** part of the repository — it isn't cloned or pushed, so hooks don't distribute themselves. Teams use a tool like **Husky**, **pre-commit**, or **Lefthook** that keeps hook definitions in the repo and installs them for everyone. This site's template does exactly that.
+
+> [!WARNING]
+> Hooks run arbitrary code on your machine. Be wary of any setup step that installs hooks from an untrusted source, and remember `--no-verify` exists for when a hook is broken and blocking you.

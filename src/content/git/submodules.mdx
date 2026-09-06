@@ -1,0 +1,14 @@
+A **submodule** embeds one Git repository inside another. The parent repo doesn't store the submodule's files — it stores a `.gitmodules` file (URL + path) and, in its tree, **a single commit hash** pinning the submodule to an exact revision.
+
+```bash
+git submodule add https://github.com/org/lib vendor/lib
+git clone --recurse-submodules <url>       # clone parent + all submodules
+git submodule update --init --recursive    # if you forgot --recurse-submodules
+
+# bump the submodule to a newer commit
+cd vendor/lib && git switch main && git pull && cd -
+git add vendor/lib && git commit -m "Bump vendor/lib"
+```
+
+> [!CAUTION]
+> Submodules are a frequent source of confusion: cloning without `--recurse-submodules` gives empty directories; the submodule is checked out in **detached HEAD** by default, so commits made inside it are easy to lose; and every collaborator has to run `submodule update` after each pull that changed the pin. Reach for a package manager, a monorepo, or Git **subtree** first, and use submodules only when you genuinely need a nested, independently-versioned repo.

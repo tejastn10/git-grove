@@ -1,0 +1,18 @@
+Both undo a change; they differ in whether they rewrite history.
+
+**`git reset`** moves the branch pointer backwards. The unwanted commits vanish from the branch. Great for local work, **unsafe on shared branches** — everyone else still has those commits, and your next push is non-fast-forward.
+
+**`git revert <commit>`** creates a **new commit** that applies the inverse of the target commit. History only grows; nothing is rewritten. This is the safe way to undo something that's already been pushed.
+
+```bash
+git revert a1b2c3d              # new commit undoing a1b2c3d
+git revert HEAD                 # undo the last commit, safely
+git revert -m 1 <merge-commit>  # revert a merge (pick which parent to keep)
+git revert --no-commit A B C    # stage several reverts, commit once
+```
+
+> [!NOTE]
+> Decision rule: has the commit been pushed to a branch other people use? **Yes → `revert`.** No → `reset` is fine and keeps history tidy.
+
+> [!WARNING]
+> Reverting a merge commit is a known footgun: it undoes the *code*, but the branch stays "merged," so re-merging later won't re-introduce the changes. If you revert a merge, you typically have to revert the revert before merging again.

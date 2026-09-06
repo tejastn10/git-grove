@@ -1,0 +1,18 @@
+`git merge feature` brings the commits from `feature` into your current branch. There are two outcomes — toggle between them in the diagram below.
+
+**Fast-forward.** If your current branch has no commits that `feature` doesn't, there's nothing to combine. Git just slides your branch pointer forward to `feature`'s commit. History stays perfectly linear; no merge commit is created.
+
+**Three-way merge.** If both branches have moved on since they diverged, Git finds their common ancestor, combines the three snapshots (ancestor + both tips), and records the result as a **merge commit** — a commit with *two* parents. Your branch's history now shows the fork and the join.
+
+```bash
+git switch main
+git merge feature                 # fast-forward if possible, else a merge commit
+git merge --no-ff feature         # always create a merge commit (keeps the branch visible)
+git merge --ff-only feature       # only if it's a fast-forward, else abort
+```
+
+> [!WARNING]
+> A merge is **not** "combining files line by line." It's a new snapshot with two parent pointers. Git computes that snapshot by three-way-comparing; where the two sides changed the same lines differently, it can't decide — that's a conflict (next section).
+
+> [!NOTE]
+> Teams often prefer `--no-ff` for feature branches so the history records that a set of commits belonged together, and `--ff-only` for `git pull` so pulling never quietly creates a merge commit.

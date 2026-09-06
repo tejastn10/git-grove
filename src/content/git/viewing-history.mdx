@@ -1,0 +1,21 @@
+`git log` walks backwards from your current commit through its parents.
+
+```bash
+git log                       # full messages, newest first
+git log --oneline             # one line per commit: short hash + summary
+git log --oneline --graph --all --decorate
+                              # ASCII graph of every branch and where refs point
+git log --stat                # + files changed and line counts
+git log -p                    # + the full diff of every commit
+git log -5                    # just the last five
+git log --since="2 weeks ago" --author="Ada"
+git log main..feature         # commits on feature that aren't on main
+git log -- path/to/file       # history touching one path
+```
+
+`git show <commit>` inspects a single commit; `git blame <file>` shows which commit last changed each line.
+
+> [!NOTE]
+> `git log --oneline --graph --all` is the single most useful way to *see* what Git is doing — branches diverging, merges, where `HEAD` is. Alias it: `git config --global alias.lg "log --oneline --graph --all --decorate"`, then just `git lg`.
+
+Every commit is identified by a 40-character SHA-1 hash (or 64-char SHA-256 in newer repositories). You can abbreviate it to the first 7–8 characters anywhere Git expects a commit, as long as it's unambiguous.

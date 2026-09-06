@@ -1,0 +1,16 @@
+A **remote** is just another Git repository that yours knows how to reach — usually on a server, identified by a URL and a short name (`origin` by convention). Nothing about a remote is special; it's a repo like yours, and "GitHub" is a host that stores one for you plus a web UI.
+
+```bash
+git remote -v                          # list remotes and their URLs
+git remote add origin git@github.com:me/project.git
+git remote add upstream https://github.com/original/project.git
+git remote rename origin gh
+git remote remove upstream
+```
+
+Your repo keeps **remote-tracking branches** — read-only local pointers named `origin/main`, `upstream/dev`, etc. — that record where each branch was *on the remote* the last time you communicated with it. They only move when you `fetch`, `pull`, or `push`. `git branch -r` lists them.
+
+> [!NOTE]
+> `origin/main` and `main` are different pointers. `main` is your local branch you commit to; `origin/main` is your cached snapshot of the server's `main`. When they've diverged, `git status` says things like *"your branch is ahead of 'origin/main' by 2 commits."*
+
+A common setup: `origin` is your fork (you push here), `upstream` is the canonical repo (you fetch here to stay current).

@@ -1,0 +1,26 @@
+A conflict happens when both branches changed **the same region of the same file** in different ways, and Git can't pick a winner. It's not an error — it's Git handing you the decision.
+
+Git marks the spot in the file and pauses the merge:
+
+```text
+<<<<<<< HEAD
+const timeout = 30_000;
+=======
+const timeout = 60_000;
+>>>>>>> feature
+```
+
+Between `<<<<<<<` and `=======` is your current branch's version; between `=======` and `>>>>>>>` is the incoming version. Resolve it by editing the file so it's correct — keep one side, the other, or write something new — and **delete all three marker lines**. Then:
+
+```bash
+git status                 # lists "Unmerged paths"
+git add resolved-file.js   # mark this file as resolved
+git merge --continue       # finish once everything is resolved
+git merge --abort          # or bail out entirely, back to pre-merge state
+```
+
+> [!NOTE]
+> `git config --global merge.conflictstyle zdiff3` adds a third section showing the **common ancestor**, which makes it far easier to see what each side actually changed.
+
+> [!WARNING]
+> Conflicts are resolved per-file with `git add`. It's easy to fix the obvious conflict markers, `git add`, and miss a second conflict lower in the same file. Search the whole file for `<<<<<<<` before staging, and build/test before running `git merge --continue`.

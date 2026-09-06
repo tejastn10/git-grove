@@ -1,0 +1,31 @@
+A tag is a fixed name for a specific commit — typically a release. Unlike a branch, a tag never moves.
+
+**Lightweight tag** — just a pointer (a file in `refs/tags/`), like a branch that won't advance:
+
+```bash
+git tag v1.4.0
+```
+
+**Annotated tag** — a full object in the database with its own author, date, message, and (optionally) a GPG signature. This is what you want for releases:
+
+```bash
+git tag -a v1.4.0 -m "Release 1.4.0"
+git tag -s v1.4.0 -m "Release 1.4.0"    # signed
+```
+
+```bash
+git tag                       # list
+git tag -l "v1.4.*"           # filter
+git show v1.4.0               # tag message + the commit it points to
+git tag -a v1.3.9 9fceb02     # tag an old commit
+git push origin v1.4.0        # tags are NOT pushed by git push
+git push origin --tags        # push all of them
+git tag -d v1.4.0             # delete locally
+git push origin --delete v1.4.0
+```
+
+> [!WARNING]
+> `git checkout v1.4.0` lands you in **detached HEAD** — you're on a commit, not a branch. Fine for looking around; commit from there and you need `git switch -c` to keep the work, or it's lost.
+
+> [!NOTE]
+> Don't move a published tag. If a release is broken, cut a new version. Tools and people assume `v1.4.0` means the same commit forever.

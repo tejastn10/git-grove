@@ -1,0 +1,15 @@
+Git has three places a file's contents can live, and almost every everyday command just moves contents between them. Step through the diagram below.
+
+- **Working tree** — the actual files on disk that you edit. Git compares them against the last commit to tell you what's "modified".
+- **Staging area** (also called the **index**) — a draft of your *next* commit. `git add` copies the current contents of a file into it. You can stage some changes and leave others for a later commit.
+- **Repository** — the `.git` directory, where committed snapshots live permanently as objects.
+
+```bash
+git add file.txt      # working tree  → staging area
+git commit            # staging area  → repository
+git restore file.txt  # discard working-tree changes (copy back from staging)
+git restore --staged file.txt   # unstage, keeping the working-tree changes
+```
+
+> [!WARNING]
+> `git add` stages a **snapshot of the file as it was when you ran it** — not a live link. If you edit the file again after `git add`, that new edit is *not* staged; `git status` will list the file as both "staged" and "modified". Run `git add` again to catch up.

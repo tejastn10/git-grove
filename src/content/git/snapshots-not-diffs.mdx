@@ -1,0 +1,13 @@
+Many version control systems store a file as an original plus a chain of diffs. **Git stores snapshots.** Every commit points to a tree that names the complete state of *every* file in the project at that moment.
+
+That sounds wasteful until you remember content-addressing: a file that didn't change between commits is the same blob, so the new tree just points at the blob that already exists. A commit that touches one file in a 10,000-file repo adds one new blob, a handful of new trees along that file's path, and one ~150-byte commit object. Watch this in the diagram below.
+
+```bash
+git cat-file -p HEAD^{tree}      # the whole snapshot — every top-level entry
+git cat-file -p HEAD~5^{tree}    # five commits ago, still a complete listing
+```
+
+**Why branching is cheap.** A branch is a 41-byte pointer to a commit. The commit already shares every unchanged blob and tree with its neighbours. Creating a branch and switching to it copies *nothing* — it just changes which commit `HEAD` resolves to and updates the working tree to match.
+
+> [!NOTE]
+> Git *does* compute diffs — for `git diff`, `git log -p`, `git blame`, and to compress storage in packfiles. But those are calculated on demand from the snapshots; they are not how history is stored.

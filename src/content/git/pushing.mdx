@@ -1,0 +1,21 @@
+`git push` uploads commits your current branch has that its **upstream** branch on the remote doesn't, then moves the remote's branch pointer.
+
+```bash
+git push                              # push current branch to its upstream
+git push -u origin feature            # first push: also set the upstream link
+git push origin feature               # push without setting upstream
+git push origin --delete old-branch   # delete a branch on the remote
+git push --tags                       # tags are not pushed by default
+```
+
+An **upstream** (tracking) branch is the remote branch your local branch is paired with. `-u` (`--set-upstream`) records it, so afterwards bare `git push` / `git pull` / `git status` know what to compare against.
+
+**Push rejections.** If the remote branch has commits you don't have locally, Git rejects the push as *non-fast-forward* — accepting it would make those commits unreachable. The fix is to integrate first:
+
+```bash
+git pull --rebase     # replay your commits on top of the remote's
+git push              # now it's a fast-forward
+```
+
+> [!WARNING]
+> `git push --force` overwrites the remote branch and **can destroy commits other people pushed** in between. Use `git push --force-with-lease` instead: it refuses unless the remote is exactly where you last saw it. Never force-push a shared branch like `main`.

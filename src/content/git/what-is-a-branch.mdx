@@ -1,0 +1,17 @@
+This is the single most important idea in Git, and the one most tutorials get subtly wrong.
+
+**A branch is not a copy of your files.** A branch is a movable pointer to one commit — physically, a file under `.git/refs/heads/` containing a 40-character hash and a newline. That's it. Creating a branch writes ~41 bytes and touches nothing else:
+
+```bash
+git branch feature        # create "feature" pointing at the current commit
+cat .git/refs/heads/feature   # → a single commit hash
+```
+
+Because a commit records its parent, and a branch just names a commit, "the commits on a branch" means "this commit and everything you reach by following parent links." Two branches can point at the same commit — they only *diverge* once you commit on one of them.
+
+**`HEAD`** is another pointer: it names the branch you currently have checked out (`.git/HEAD` usually contains `ref: refs/heads/main`). When you `git commit`, Git creates the commit, then moves *the branch HEAD points to* forward — not HEAD directly.
+
+Step through the diagram below to watch `git branch`, `git switch`, and `git commit` move these pointers.
+
+> [!WARNING]
+> Because branches are so cheap, make one for every piece of work. Deleting a branch (`git branch -d`) just removes the pointer — the commits live on until garbage collection, and only if nothing else can reach them.

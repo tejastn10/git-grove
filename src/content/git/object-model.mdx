@@ -1,0 +1,20 @@
+Git's database has just four object types, and each is stored under the SHA-1 (or SHA-256) hash of its own contents — it's **content-addressed**. Step through the diagram below.
+
+- **blob** — the raw bytes of one file. No name, no permissions, just content.
+- **tree** — a directory listing: a set of entries, each `(mode, name, hash)` pointing at a blob or another tree.
+- **commit** — a pointer to one root tree (the snapshot), plus zero or more parent commits, plus author, committer, and message.
+- **tag** — an annotated tag: a pointer to an object plus metadata and an optional signature.
+
+```bash
+git cat-file -p HEAD           # show the commit: tree, parent, author, message
+git cat-file -p HEAD^{tree}    # show the root tree
+git cat-file -p <blob-hash>    # show a file's contents
+git cat-file -t <hash>         # what type is this object?
+git hash-object file.txt       # compute the hash Git would give this content
+```
+
+> [!NOTE]
+> Content-addressing gives Git **automatic deduplication and integrity checking** for free. Identical content anywhere — same file in two branches, unchanged file across 1,000 commits — is stored once. And if a byte in `objects/` ever corrupts, the hash no longer matches and Git tells you.
+
+> [!WARNING]
+> A commit hash is derived from its tree, its parents, *and* its author/date/message. That's why `commit --amend`, `rebase`, and `cherry-pick` all produce new hashes — any change to any input changes the identity of the commit.

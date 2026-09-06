@@ -1,0 +1,10 @@
+A **version control system** (VCS) records snapshots of your project over time so you can see what changed, when, and by whom — and go back to any earlier state. Without one, "the current version" is whatever is on someone's laptop, and collaboration means emailing zip files.
+
+Git is a **distributed** VCS: every clone is a full copy of the project and its entire history, not a thin checkout from a central server. You can commit, branch, view history, and diff with no network at all. There is no privileged "master copy" in the protocol — repositories like the one on GitHub are a shared convention, not a technical requirement.
+
+Git was built in 2005 by Linus Torvalds to host Linux kernel development after its previous tool became unavailable. Its design goals — speed, a simple internal model, and first-class support for thousands of parallel branches — are why it now runs almost everything.
+
+> [!NOTE]
+> Git tracks **content**, not files. If you rename a file and change one line, Git figures out the rename by comparing snapshots — it never stores "rename" as an operation. This is why `git mv` is just a convenience for `mv` + `git add`.
+
+The rest of this guide builds from that snapshot model up. For the full origin story, see the [History](/history) page.

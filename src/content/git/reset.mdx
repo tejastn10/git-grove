@@ -1,0 +1,21 @@
+`git reset <target>` moves the current branch pointer to `<target>`. The flag controls how far the change propagates into the staging area and working tree. Try each mode in the diagram below.
+
+| Mode | HEAD / branch | Staging area | Working tree | Use it to… |
+| --- | --- | --- | --- | --- |
+| `--soft` | → target | unchanged | unchanged | undo commits but keep everything staged (e.g. to re-commit as one) |
+| `--mixed` *(default)* | → target | → target | unchanged | unstage things / undo commits, keep the edits to re-stage |
+| `--hard` | → target | → target | → target | throw the changes away completely |
+
+```bash
+git reset --soft HEAD~1     # undo last commit, keep changes staged
+git reset HEAD~1            # undo last commit, keep changes unstaged (--mixed)
+git reset --hard HEAD~1     # undo last commit AND discard its changes
+git reset --hard origin/main   # make local branch exactly match the remote
+git reset path/to/file     # unstage one file (no commit move)
+```
+
+> [!CAUTION]
+> `--hard` is the only Git command in everyday use that can destroy uncommitted work with no undo — the working tree has no reflog. The **commits** it "removes" are safe in `git reflog` for ~90 days; the uncommitted edits are simply gone.
+
+> [!NOTE]
+> `reset` moves a branch pointer — it does not delete commits. C2 and C3 in the diagram still exist; they're just no longer reachable from `main`.

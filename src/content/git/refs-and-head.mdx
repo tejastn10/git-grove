@@ -1,0 +1,24 @@
+A **ref** is a human-readable name for a commit hash — a small file under `.git/refs/`. Branches and tags are just refs in different namespaces:
+
+| Namespace | Contains | Example |
+| --- | --- | --- |
+| `refs/heads/` | local branches | `refs/heads/main` |
+| `refs/remotes/` | remote-tracking branches | `refs/remotes/origin/main` |
+| `refs/tags/` | tags | `refs/tags/v1.4.0` |
+
+**`HEAD`** is a special ref that answers "where am I?". Normally it's *symbolic* — it contains `ref: refs/heads/main`, meaning "I'm on `main`, and committing moves `main`." Check out a commit directly and `HEAD` becomes **detached**: it holds a raw hash, and commits you make aren't on any branch.
+
+Refs can be combined with suffixes to navigate the graph:
+
+```bash
+HEAD~1      # first parent of HEAD  (also HEAD^)
+HEAD~3      # three first-parents back
+HEAD^2      # the SECOND parent (only meaningful for merge commits)
+main@{1}    # where main pointed one reflog entry ago
+main@{yesterday}
+git rev-parse HEAD      # resolve any of the above to a full 40-char hash
+git symbolic-ref HEAD   # what HEAD currently points to
+```
+
+> [!NOTE]
+> `git switch -c rescue <hash>` turns a detached HEAD into a real branch, so commits made while detached aren't lost to garbage collection.

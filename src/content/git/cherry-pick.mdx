@@ -1,0 +1,18 @@
+`git cherry-pick <commit>` takes the *change introduced by* one commit and applies it as a new commit on your current branch. Use it to pull one hotfix out of a branch without merging the whole thing, or to move a commit you made on the wrong branch.
+
+```bash
+git switch main
+git cherry-pick a1b2c3d              # apply one commit here
+git cherry-pick a1b2c3d..f6e5d4c     # a range (exclusive of the first)
+git cherry-pick -x a1b2c3d           # note the original hash in the message
+git cherry-pick --continue           # after resolving a conflict
+git cherry-pick --abort
+```
+
+The new commit has the same diff and message but a **different hash** and parent — it's a copy, not a move.
+
+> [!WARNING]
+> Cherry-picking a commit that later gets merged in the normal way means the *same change* arrives twice. Git usually notices identical patches during a merge, but not always — and never during a rebase. Overusing cherry-pick is a sign the branches should have been organised differently.
+
+> [!NOTE]
+> Committed on the wrong branch? `git switch right-branch`, `git cherry-pick <hash>`, then go back and `git reset --hard HEAD~1` on the wrong branch (or `git revert` if it was pushed).

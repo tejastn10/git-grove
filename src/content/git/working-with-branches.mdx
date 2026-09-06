@@ -1,0 +1,23 @@
+Since Git 2.23 there are two focused commands, `switch` and `restore`, that split up the old overloaded `git checkout`.
+
+```bash
+git branch                     # list local branches (* marks current)
+git branch -a                  # include remote-tracking branches
+
+git switch main                # check out an existing branch
+git switch -c feature          # create "feature" and check it out
+git switch -c fix origin/main  # branch from a specific starting point
+git switch -                   # switch to the previous branch
+
+git branch -d feature          # delete a branch that's been merged
+git branch -D feature          # force-delete (unmerged — you lose the pointer)
+git branch -m old new          # rename
+```
+
+`git checkout` still works and you'll see it everywhere: `git checkout feature` (= `switch`), `git checkout -- file.txt` (= `restore file.txt`), `git checkout abc123` (detached HEAD — see [HEAD & refs](#refs-and-head)).
+
+> [!NOTE]
+> `git switch` refuses to change branches if it would silently overwrite uncommitted changes. Either commit them, `git stash` them, or — if the changes make sense on the other branch — Git will carry them across cleanly when there's no conflict.
+
+> [!WARNING]
+> `git checkout -- file.txt` and `git restore file.txt` **permanently discard** your uncommitted changes to that file. There is no reflog for the working tree. Double-check the path.

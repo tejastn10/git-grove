@@ -1,0 +1,28 @@
+Everything Git knows about your project is in one directory: `.git/`. Delete it and you have a plain folder; keep it and you have the entire history. A quick tour:
+
+```text
+.git/
+├── HEAD              # ref: refs/heads/main  — which branch is checked out
+├── config            # this repo's configuration
+├── description       # only used by GitWeb
+├── index             # the staging area (a binary file)
+├── objects/          # every blob, tree, commit and tag, content-addressed
+│   ├── 3a/           #   loose objects: dir = first 2 hex chars of the hash
+│   └── pack/         #   packfiles: many objects, compressed together
+├── refs/
+│   ├── heads/        # local branches — each file holds one commit hash
+│   ├── tags/
+│   └── remotes/
+│       └── origin/   # remote-tracking branches
+├── logs/             # the reflog
+└── hooks/            # hook scripts (not versioned)
+```
+
+```bash
+git rev-parse --git-dir        # where is .git for this working tree?
+cat .git/HEAD
+cat .git/refs/heads/main       # → a commit hash, plus a newline
+```
+
+> [!NOTE]
+> This is why Git operations are fast and work offline: reading history is walking a local graph of files, not querying a server. It's also why `.git` can grow — every version of every file is in `objects/` until garbage collection packs and prunes it.

@@ -1,0 +1,24 @@
+```bash
+git clone git@github.com:me/project.git       # full copy: all history + working tree
+git clone --depth 1 <url>                      # shallow: just the latest commit
+```
+
+`clone` sets up `origin`, creates remote-tracking branches, and checks out the default branch with an upstream already configured.
+
+**`git fetch`** downloads new commits and objects from the remote and moves your **remote-tracking branches** (`origin/*`). It does *not* touch your local branches or working tree. It's always safe — nothing you're working on changes.
+
+**`git pull`** is `git fetch` followed immediately by an integration of the upstream branch into your current one — a `merge` by default, or a `rebase` with `--rebase` or `pull.rebase=true`.
+
+```bash
+git fetch origin
+git log HEAD..origin/main --oneline   # review what you fetched before integrating
+git merge origin/main                 # …then integrate deliberately
+
+git pull                              # fetch + merge in one step
+git pull --rebase                     # fetch + replay your commits on top
+```
+
+Step through the diagram below to see exactly which pointer moves at each stage.
+
+> [!WARNING]
+> `git pull` on a branch with local commits *and* new upstream commits creates a merge commit (often a messy "Merge branch 'main' of …"). Many people set `git config --global pull.rebase true` for a linear history — but only rebase commits you haven't pushed.

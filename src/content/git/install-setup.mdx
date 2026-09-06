@@ -1,0 +1,23 @@
+Install Git from [git-scm.com/downloads](https://git-scm.com/downloads), or your platform's package manager (`brew install git`, `apt install git`, `winget install Git.Git`). Check what you have:
+
+```bash
+git --version
+```
+
+Git reads configuration from three files, most-specific wins: the repo's `.git/config`, your user file (`~/.gitconfig`, written with `--global`), and a system file (`--system`). Set your identity once, globally — it's stamped onto every commit you make:
+
+```bash
+git config --global user.name "Ada Lovelace"
+git config --global user.email "ada@example.com"
+
+# Quality-of-life defaults
+git config --global init.defaultBranch main   # name the first branch "main"
+git config --global pull.rebase false          # be explicit about pull's behaviour
+git config --global core.editor "code --wait"  # editor for commit messages
+
+# See every setting and the file it came from
+git config --list --show-origin
+```
+
+> [!WARNING]
+> The email you set here is public in every commit you push. Use an address you're comfortable exposing — GitHub can give you a `noreply` address for this exact reason. Changing it later does **not** rewrite commits you already made.

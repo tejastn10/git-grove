@@ -1,0 +1,28 @@
+Four commands get you from an empty folder to a project with history.
+
+```bash
+git init                     # create .git/ — this folder is now a repository
+git status                   # always safe; shows tracked / staged / untracked
+
+git add README.md            # stage one file
+git add .                    # stage everything under the current directory
+git add -p                   # stage selected hunks, interactively
+
+git commit -m "Initial commit"
+git commit                   # opens your editor for a longer message
+```
+
+A good commit message has a short summary line (≤ ~50 chars, imperative mood — "Add login form", not "Added" or "Adds"), a blank line, then a body explaining *why* if it isn't obvious.
+
+Made a typo in the last message, or forgot a file?
+
+```bash
+git add forgotten-file.js
+git commit --amend           # replace the previous commit with a new one
+```
+
+> [!WARNING]
+> `git commit --amend` does not edit the old commit — it **creates a new commit** with a new hash and moves the branch to it. Only amend commits you haven't pushed. If you've already shared it, amending forces everyone else to reconcile a rewritten history.
+
+> [!NOTE]
+> `git add .` also stages new files you might not want tracked — build output, `.env`, `node_modules`. That's what `.gitignore` is for (next section). Check `git status` before every commit.

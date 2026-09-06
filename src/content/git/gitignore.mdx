@@ -1,0 +1,23 @@
+A `.gitignore` file lists patterns for paths Git should not track. It lives in the repo (usually at the root) and is committed like any other file, so the whole team shares it.
+
+```gitignore
+# a comment
+node_modules/        # a directory anywhere in the tree
+*.log                # any file ending in .log
+/dist                # dist, but only at the repo root
+.env                 # secrets
+!.env.example        # …but DO track this one (negation)
+build/*.tmp          # tmp files inside build/
+```
+
+Patterns follow shell globbing. A leading `/` anchors to the `.gitignore`'s location; a trailing `/` matches directories only; `!` re-includes something an earlier rule excluded.
+
+> [!WARNING]
+> `.gitignore` only affects **untracked** files. If a file is already tracked, adding it to `.gitignore` does nothing — Git keeps versioning it. Stop tracking it (while keeping it on disk) with:
+> ```bash
+> git rm --cached secrets.env
+> git commit -m "Stop tracking secrets.env"
+> ```
+> And if a secret was ever committed, it's in the history forever until you rewrite it — rotate the credential.
+
+Start from a template for your stack at [github.com/github/gitignore](https://github.com/github/gitignore).

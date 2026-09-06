@@ -1,0 +1,21 @@
+New objects are written **loose** — one zlib-compressed file each under `.git/objects/xx/`. That's fast to write but inefficient at scale, so Git periodically runs housekeeping.
+
+**`git gc`** (garbage collection):
+
+1. Packs loose objects into a single **packfile** (`.git/objects/pack/`), storing similar objects as deltas against each other and compressing the whole thing. A repo can shrink dramatically.
+2. Updates the reflog, expiring old entries.
+3. **Prunes** objects that are both unreachable from any ref and older than the grace period (default 2 weeks) — this is when "lost" commits are finally deleted.
+
+```bash
+git gc                     # usually runs automatically after enough activity
+git gc --aggressive        # slower, tighter packing — rarely needed
+git count-objects -vH      # loose vs packed object counts and sizes
+git prune --dry-run        # what would be pruned right now
+git fsck --lost-found      # find dangling (unreachable) objects
+```
+
+> [!NOTE]
+> Git triggers `gc --auto` on its own after operations that create many loose objects (commit, merge, receive-pack). You rarely run it by hand.
+
+> [!WARNING]
+> After a bad rebase or reset, your rescue window is "until gc prunes it" — reachable via `git reflog` for ~90 days, or `git fsck` until the ~2-week unreachable grace period passes. Recover first, tidy later. Don't run `git gc --prune=now` while trying to get something back.

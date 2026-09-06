@@ -1,0 +1,26 @@
+Every time `HEAD` moves — commit, checkout, reset, rebase, merge, pull — Git appends a line to the **reflog**, a local journal of where `HEAD` (and each branch) has been.
+
+```bash
+git reflog                       # HEAD's recent positions
+git reflog show main             # just the "main" branch's history of positions
+```
+
+```text
+a1b2c3d HEAD@{0}: reset: moving to HEAD~2
+9f8e7d6 HEAD@{1}: commit: Add caching layer
+4d5e6f7 HEAD@{2}: checkout: moving from main to feature
+```
+
+This is your undo button for almost any "oh no" moment. Botched a rebase, hard-reset too far, deleted a branch? The commits are still there — find them in the reflog and point a branch back at them:
+
+```bash
+git reset --hard HEAD@{1}          # go back to where you were one action ago
+git switch -c recovered a1b2c3d    # rescue a specific commit into a new branch
+git branch recovered HEAD@{5}
+```
+
+> [!NOTE]
+> The reflog is **per-repository and local** — it isn't cloned, fetched, or pushed. If you delete the repo, the reflog goes with it. Entries expire after 90 days (30 for unreachable commits) and then become eligible for garbage collection.
+
+> [!WARNING]
+> Because it's local-only, the reflog can't help a teammate recover *your* lost commit. And `git reflog expire --expire=now --all` followed by `git gc --prune=now` really does delete unreachable history — don't run that when you're trying to recover something.

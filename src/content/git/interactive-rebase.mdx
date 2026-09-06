@@ -1,0 +1,28 @@
+`git rebase -i <base>` opens an editor listing every commit from `<base>` to `HEAD`, oldest at the top, each with an action you can change:
+
+```text
+pick   a1b2c3d  Add user model
+squash 4d5e6f7  fix typo
+reword 8a9b0c1  Add login endpoint
+drop   2c3d4e5  debugging noise
+```
+
+| Action | Effect |
+| --- | --- |
+| `pick` | keep the commit as-is |
+| `reword` | keep the changes, edit the message |
+| `edit` | pause here so you can amend the snapshot |
+| `squash` | merge into the previous commit, combine messages |
+| `fixup` | like squash, but discard this commit's message |
+| `drop` | delete the commit entirely |
+
+Reorder commits by reordering the lines. Save and close; Git replays from the top, stopping wherever it needs you (`edit`, or a conflict). `git rebase --continue` after each.
+
+```bash
+git rebase -i HEAD~4          # tidy the last 4 commits
+git rebase -i main            # tidy everything since you branched
+git commit --fixup=<hash>     # queue a fixup; then: git rebase -i --autosquash main
+```
+
+> [!CAUTION]
+> Interactive rebase **rewrites every commit from the edit point onward** — new hashes. Only do this on commits you haven't pushed to a shared branch. If you must update a shared branch, coordinate and use `git push --force-with-lease`.
